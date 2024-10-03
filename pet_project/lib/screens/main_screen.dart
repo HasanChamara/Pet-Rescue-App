@@ -15,14 +15,15 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _pages = [
     HomePage(),
     ProfilePage(),
-    SettingsPage(),
-    // const Center(child: Text('Settings')),
+    const Center(child: Text('Settings')),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Pet Rescue')),
+      appBar: AppBar(title: const Text('Pet Rescue'),
+      centerTitle: true,
+      ),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,

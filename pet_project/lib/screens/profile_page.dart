@@ -46,36 +46,72 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Profile')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ListTile(
-              title: Text('Name:'),
-              subtitle: Text(name),
-            ),
-            ListTile(
-              title: Text('Email:'),
-              subtitle: Text(email),
-            ),
-            ListTile(
-              title: Text('Phone Number:'),
-              subtitle: Text(phoneNumber),
-            ),
-            ListTile(
-              title: Text('Age:'),
-              subtitle: Text(age.toString()),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _logout,
-              child: Text('Logout'),
-            ),
-          ],
+      appBar: AppBar(title: Text('Profile'),
+        centerTitle: true, titleTextStyle: TextStyle(color: Colors.black)
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth > 600) {
+                    // Landscape Mode Layout (Wider screen)
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildProfileInfoTile('Name:', name),
+                              _buildProfileInfoTile('Email:', email),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildProfileInfoTile('Phone Number:', phoneNumber),
+                              _buildProfileInfoTile('Age:', age.toString()),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  } else {
+                    // Portrait Mode Layout (Narrow screen)
+                    return Column(
+                      children: [
+                        _buildProfileInfoTile('Name:', name),
+                        _buildProfileInfoTile('Email:', email),
+                        _buildProfileInfoTile('Phone Number:', phoneNumber),
+                        _buildProfileInfoTile('Age:', age.toString()),
+                      ],
+                    );
+                  }
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _logout,
+                child: Text('Logout'),
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  // Helper function to build profile info tiles
+  Widget _buildProfileInfoTile(String title, String subtitle) {
+    return ListTile(
+      title: Text(title),
+      subtitle: Text(subtitle),
     );
   }
 }
