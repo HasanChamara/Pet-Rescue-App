@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_project/screens/home_page.dart';
 import 'package:pet_project/screens/profile_page.dart';
-import 'package:pet_project/screens/setting_page.dart';
+import 'package:pet_project/screens/settings_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,7 +15,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _pages = [
     HomePage(),
     ProfilePage(),
-    const Center(child: Text('Settings')),
+    SettingsPage(),
+    // const Center(child: Text('Settings')),
   ];
 
   @override
