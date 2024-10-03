@@ -12,7 +12,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   final List<Widget> _pages = [
-    homepage(),
+    HomePage(),
     ProfilePage(),
     //const Center(child: Text('Home')),
     //const Center(child: Text('Profile')),
