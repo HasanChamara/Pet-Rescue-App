@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_project/screens/home_page.dart';
 import 'package:pet_project/screens/profile_page.dart';
+import 'package:pet_project/screens/setting_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,15 +15,14 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _pages = [
     HomePage(),
     ProfilePage(),
-    //const Center(child: Text('Home')),
-    //const Center(child: Text('Profile')),
-    const Center(child: Text('Settings')),
+    SettingsPage(),
+    // const Center(child: Text('Settings')),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
+      appBar: AppBar(title: const Text('Pet Rescue')),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
