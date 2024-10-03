@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -8,16 +9,42 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final TextEditingController emailController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController retypePasswordController = TextEditingController();
+
   String errorMessage = '';
 
   Future<void> signUpUser() async {
+    if (passwordController.text != retypePasswordController.text) {
+      setState(() {
+        errorMessage = "Passwords do not match!";
+      });
+      return;
+    }
+
     try {
-      await _auth.createUserWithEmailAndPassword(
-        email: emailController.text,
+      // Create user with Firebase Authentication
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: usernameController.text, // Email is considered as username
         password: passwordController.text,
       );
+
+      // Save additional user details in Firestore
+      await _firestore.collection('users').doc(userCredential.user?.uid).set({
+        'name': nameController.text,
+        'age': int.parse(ageController.text),
+        'phone_number': phoneNumberController.text,
+        'username': usernameController.text,
+        'email': userCredential.user?.email,
+      });
+
+      // Navigate to the main screen after successful sign-up
       Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
       setState(() {
@@ -32,33 +59,54 @@ class _SignUpScreenState extends State<SignUpScreen> {
       appBar: AppBar(title: Text('Sign Up')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: signUpUser,
-              child: Text('Sign Up'),
-            ),
-            if (errorMessage.isNotEmpty)
-              Text(
-                errorMessage,
-                style: TextStyle(color: Colors.red),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(labelText: 'Name'),
               ),
-            TextButton(
-              onPressed: () => Navigator.pushNamed(context, '/login'),
-              child: Text('Already have an account? Login'),
-            ),
-          ],
+              TextField(
+                controller: ageController,
+                decoration: InputDecoration(labelText: 'Age'),
+                keyboardType: TextInputType.number,
+              ),
+              TextField(
+                controller: phoneNumberController,
+                decoration: InputDecoration(labelText: 'Phone Number'),
+                keyboardType: TextInputType.phone,
+              ),
+              TextField(
+                controller: usernameController,
+                decoration: InputDecoration(labelText: 'Username (Email)'),
+              ),
+              TextField(
+                controller: passwordController,
+                decoration: InputDecoration(labelText: 'Password'),
+                obscureText: true,
+              ),
+              TextField(
+                controller: retypePasswordController,
+                decoration: InputDecoration(labelText: 'Retype Password'),
+                obscureText: true,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: signUpUser,
+                child: Text('Sign Up'),
+              ),
+              if (errorMessage.isNotEmpty)
+                Text(
+                  errorMessage,
+                  style: TextStyle(color: Colors.red),
+                ),
+              TextButton(
+                onPressed: () => Navigator.pushNamed(context, '/login'),
+                child: Text('Already have an account? Login'),
+              ),
+            ],
+          ),
         ),
       ),
     );
