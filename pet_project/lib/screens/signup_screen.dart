@@ -29,13 +29,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
 
     try {
-      // Create user with Firebase Authentication
+      
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: usernameController.text, // Email is considered as username
+        email: usernameController.text,
         password: passwordController.text,
       );
 
-      // Save additional user details in Firestore
+      
       await _firestore.collection('users').doc(userCredential.user?.uid).set({
         'name': nameController.text,
         'age': int.parse(ageController.text),
@@ -44,7 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'email': userCredential.user?.email,
       });
 
-      // Navigate to the main screen after successful sign-up
+      
       Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
       setState(() {

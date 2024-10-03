@@ -16,7 +16,6 @@ class _HomeScreenState extends State<HomeScreen> {
     HomePage(),
     ProfilePage(),
     SettingsPage(),
-    // const Center(child: Text('Settings')),
   ];
 
   @override

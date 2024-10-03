@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:pet_project/screens/login_screen.dart';
 import 'package:pet_project/screens/main_screen.dart';
 import 'package:pet_project/screens/signup_screen.dart';
-import 'package:provider/provider.dart';
 import 'package:pet_project/screens/theme_notifier.dart';
+import 'package:provider/provider.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
   runApp(
     ChangeNotifierProvider(
-      create: (_) => ThemeNotifier(),  // Initialize the theme notifier
+      create: (_) => ThemeNotifier(),
       child: const MyApp(),
     ),
   );
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: ThemeData.light(),
           darkTheme: ThemeData.dark(),
-          themeMode: themeNotifier.currentTheme,  // Apply current theme
+          themeMode: themeNotifier.currentTheme,
           initialRoute: '/',
           routes: {
             '/': (context) => LoginScreen(),

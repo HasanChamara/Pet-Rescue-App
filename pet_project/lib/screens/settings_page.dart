@@ -17,7 +17,7 @@ class SettingsPage extends StatelessWidget {
             title: Text('Dark Theme'),
             value: themeNotifier.isDarkMode,
             onChanged: (value) {
-              themeNotifier.toggleTheme(); // Toggle the theme
+              themeNotifier.toggleTheme();
             },
           ),
         ],

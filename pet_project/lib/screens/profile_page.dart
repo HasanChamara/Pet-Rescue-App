@@ -57,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
               LayoutBuilder(
                 builder: (context, constraints) {
                   if (constraints.maxWidth > 600) {
-                    // Landscape Mode Layout (Wider screen)
+                    
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +83,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     );
                   } else {
-                    // Portrait Mode Layout (Narrow screen)
                     return Column(
                       children: [
                         _buildProfileInfoTile('Name:', name),
@@ -107,7 +106,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // Helper function to build profile info tiles
   Widget _buildProfileInfoTile(String title, String subtitle) {
     return ListTile(
       title: Text(title),
