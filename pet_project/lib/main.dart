@@ -3,11 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:pet_project/screens/login_screen.dart';
 import 'package:pet_project/screens/main_screen.dart';
 import 'package:pet_project/screens/signup_screen.dart';
+import 'package:pet_project/screens/theme_notifier.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeNotifier(),  // Provide the theme notifier
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -15,14 +22,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => LoginScreen(),
-        '/login': (context) => LoginScreen(),
-        '/signup': (context) => SignUpScreen(),
-        '/home': (context) => HomeScreen(),
+    return Consumer<ThemeNotifier>(
+      builder: (context, themeNotifier, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData.light(),    // Light theme
+          darkTheme: ThemeData.dark(),  // Dark theme
+          themeMode: themeNotifier.currentTheme,  // Dynamic theme mode
+          initialRoute: '/',
+          routes: {
+            '/': (context) => LoginScreen(),
+            '/login': (context) => LoginScreen(),
+            '/signup': (context) => SignUpScreen(),
+            '/home': (context) => HomeScreen(),
+          },
+        );
       },
     );
   }
